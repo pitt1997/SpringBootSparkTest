@@ -17,22 +17,24 @@
 	</head>
 
 	<body class="text-center">
-		<form class="form-signin" action="dashboard.html">
+		<form class="form-signin" action="dashboard.html" th:action="@{/user/login}" method="post">
 			<img class="mb-4" th:href="@{/asserts/img/bootstrap-solid.svg}" src="asserts/img/bootstrap-solid.svg" alt="" width="72" height="72">
-			<h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
-			<label class="sr-only">Username</label>
-			<input type="text" class="form-control" placeholder="Username" required="" autofocus="">
-			<label class="sr-only">Password</label>
-			<input type="password" class="form-control" placeholder="Password" required="">
+			<h1 class="h3 mb-3 font-weight-normal" th:utext="#{login.tip}">Please sign in</h1>
+			<!--判断条件成立的时候才生效   mag不为空的时候才生效-->
+			<p style="color: red" th:text="${msg}" th:if="${not #strings.isEmpty(msg)}"></p>
+			<label class="sr-only" th:text="#{login.username}">Username</label>
+			<input type="text" name="username" class="form-control" placeholder="Username" required="" autofocus="" th:placeholder="#{login.username}">
+			<label class="sr-only" th:text="#{login.password}">Password</label>
+			<input type="password" name="password" class="form-control" placeholder="Password" required="" th:placeholder="#{login.password}">
 			<div class="checkbox mb-3">
 				<label>
-          <input type="checkbox" value="remember-me"> Remember me
-        </label>
+          		<input type="checkbox" value="remember-me"/> [[#{login.remember}]]
+        		</label>
 			</div>
-			<button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+			<button class="btn btn-lg btn-primary btn-block" type="submit"th:utext="#{login.btn}">Sign in</button>
 			<p class="mt-5 mb-3 text-muted">© 2017-2018</p>
-			<a class="btn btn-sm">中文</a>
-			<a class="btn btn-sm">English</a>
+			<a class="btn btn-sm" th:href="@{index.html(l='zh_CN')}">中文</a>
+			<a class="btn btn-sm" th:href="@{index.html(l='en_US')}">English</a>
 		</form>
 
 	</body>
