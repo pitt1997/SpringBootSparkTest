@@ -1,5 +1,6 @@
 package com.cn.springboot04web.entities;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.concurrent.ConcurrentHashMap;
@@ -12,8 +13,11 @@ public class MovieRating {
     public static HashMap<String,Float> MMap=new HashMap<String,Float>();
     //女性打分
     public static HashMap<String,Float> FMap=new HashMap<String,Float>();
-    //
+    //Set
     public static HashSet<String> movieSet=new HashSet<>();
+    //所有分数
+    public static ArrayList<Float> scoreList=new ArrayList<>();
+
     //初始化map值
     static {
         tmpMap.put("1",1.00f);

@@ -41,6 +41,19 @@ public class SparkStreamingCtroller {
     }
 
 
+    @RequestMapping(value = "/getList", method = RequestMethod.GET)
+    @ResponseBody
+    public Result<ArrayList<Float>> getList(Model model) {
+        //返回一个数组
+        System.out.println("到达getListMovieRating.scoreList--"+MovieRating.scoreList.size());
+
+        for(Float f:MovieRating.scoreList){
+            System.out.println("------------------f------------------------"+f);
+        }
+
+        return Result.success(MovieRating.scoreList);
+    }
+
     @RequestMapping(value = "/getAvgResult", method = RequestMethod.GET)
     @ResponseBody
     public Result<Echarts> doResult(Model model) {
