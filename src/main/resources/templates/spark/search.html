@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<!--导入thymeleaf-->
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!--multipart/form-data-->
+    <!--<meta http-equiv="Content-Type"                            content="multipart/form-data; charset=utf-8" />-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>电影评分详情</title>
+    <!--echarts-->
+    <script type="text/javascript" th:src="@{/asserts/js/echarts.min.js}"></script>
+    <!--jquery-->
+    <script type="text/javascript" th:src="@{/asserts/js/jquery-1.11.1.js}"></script>
+    <!--shine：echarts的皮肤-->
+    <script type="text/javascript" th:src="@{/asserts/js/shine.js}"></script>
+    <!--layer-->
+    <script type="text/javascript" th:src="@{/layer/layer.js}"></script>
+    <!--bootstrap-->
+    <link th:href="@{/asserts/css/bootstrap.min.css}" rel="stylesheet">
+    <!--dashboard-->
+    <!--<link href="asserts/css/dashboard.css" rel="stylesheet">-->
+    <link th:href="@{/asserts/css/dashboard.css}" rel="stylesheet">
+
+</head>
+<body>
+<!--~{模板名：：片段名}-->
+<div th:replace="commons/bar::topbar"></div>
+
+<div class="container-fluid">
+    <div class="row">
+        <!--引入侧边栏--><!--~{模板名：：选择器}-->
+        <div th:replace="~{commons/bar::#sidebar(activeUri='search')}"></div>
+    </div>
+
+
+
+</div>
+
+
+<div id="main" style="width: 97%; height:300px;"></div>
+<br>
+<!--<a class="btn btn-sm btn-success" th:onclick="'javascript:getResult()'">开始</a>-->
+<main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
+    <!--发送GET请求，href默认为GET请求!!!!!!!!!!!-->
+    <div class="table-responsive">
+        <!--<a class="btn btn-sm btn-success" th:onclick="'javascript:getResult()'">开始监控</a>-->
+        <button class="btn btn-sm btn-primary" type="button" id="buyButton" onclick="getAvgResult()">开始监控</button>
+    </div>
+</main>
+<br>
+<br>
+<!--实现轮转效果显示-->
+<div id="main2" style="width: 97%;height:300px;"></div>
+</body>
+
+<script>
+    //('main'),'shine')：使用皮肤
+    var myChart = echarts.init(document.getElementById('main'));
+    var option = {
+        grid:{
+            left:'20%',
+            right:'0',
+            bottom:'1%',
+            containLabel:true
+        },
+        title: {
+            left:'20%',
+            text: '上传电影评分情况'
+        },
+        tooltip: {
+            trigger: 'axis'
+        },
+        legend: {
+            data:[]
+        },
+        toolbox: {
+            feature: {
+                saveAsImage: {
+                    name:'奖池监控',
+                    pixelRatio:2
+                }
+            }
+        },
+        xAxis : [ {
+            type : 'category',
+            boundaryGap: false,
+            data : []
+        } ],
+        yAxis : [ {
+            type : 'value'
+        } ],
+        series : []
+    };
+    //初始化，调用getAvgResult方法
+    $(function () {
+      //alert("开始!!!");
+      //getAvgResult();
+    })
+    //轮询操作
+    function getAvgResult() {
+        $.ajax({
+            url : "/crud/getAvgResult",
+            type : "GET",
+            success : function(data) {
+                if (data.code == 0) {
+                    var result = data.data;
+                    //继续轮询
+                    setTimeout(function() {
+                        getAvgResult();
+                    }, 500);//200ms之后继续轮询
+                    //给图标标题赋值
+                    option.legend.data = result.legend;
+                    //读取横坐标值
+                    option.xAxis[0].data = result.axis;
+                    var series_arr = result.series;
+                    //驱动图表生成的数据内容，数组中每一项代表一个系列的特殊选项及数据
+                    for (var i = 0; i < series_arr.length; i++) {
+                        option.series[i] = result.series[i];
+                    }
+                    //过渡控制，隐藏loading（读取中）
+                    myChart.hideLoading();
+                    // 为echarts对象加载数据
+                    myChart.setOption(option);
+                } else {
+                    //layer.msg(data.msg);
+                }
+            },
+            error : function() {
+                //layer.msg("请求有误！");
+            }
+        });
+    }
+</script>
+<script>
+    var myChart2 = echarts.init(document.getElementById('main2'));
+    var date = [];
+    var randomData = [];
+    for(var i = 0; i<30; i++){
+        date.push('第' + (i+1) + '天');
+        randomData.push(Math.floor(Math.random()*100));
+    }
+    // 指定图表的配置项和数据
+    var option2 = {
+        grid:{
+            left:'20%',
+            right:'0',
+            bottom:'1%',
+            containLabel:true
+        },
+        title: {
+            left:'20%',
+            text: '实时监控打分情况'
+        },
+        xAxis: {
+            type: 'category',
+            data: date
+        },
+        yAxis: {
+            type: 'value'
+        },
+        series: [{
+            data: randomData,
+            type: 'line'
+        }]
+    };
+
+    // 使用刚指定的配置项和数据显示图表。
+    myChart2.setOption(option2);
+
+    var len = date.length;
+
+    setInterval(function(){
+        randomData.push(Math.floor(Math.random()*100));
+        randomData.shift();
+        date.push(len++);
+        date.shift();
+        myChart2.setOption({
+            xAxis: {
+                data: date
+            },
+            series: [{
+                data: randomData
+            }]
+        });
+    }, 2000)
+
+</script>
+</html>
