@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-<!-- saved from url=(0052)http://getbootstrap.com/docs/4.0/examples/dashboard/ -->
 <html lang="en" xmlns:th="http://www.thymeleaf.org"><!--引入名称空间-->
 
 <head>
@@ -7,12 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
-
+    <script type="text/javascript" src="asserts/js/echarts.min.js"></script>
+    <!--<script type="text/javascript" src="asserts/js/jquery-1.11.1.js"></script>-->
+    <script type="text/javascript" src="/layer/layer.js"></script>
     <title>Dashboard Template for Bootstrap</title>
-    <!-- Bootstrap core CSS -->
     <link href="asserts/css/bootstrap.min.css" rel="stylesheet">
-
-    <!-- Custom styles for this template -->
     <link href="asserts/css/dashboard.css" rel="stylesheet">
     <style type="text/css">
         /* Chart.js */
@@ -43,40 +41,30 @@
 </head>
 
 <body>
-<!--<nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0">-->
-    <!--<a class="navbar-brand col-sm-3 col-md-2 mr-0" href="http://getbootstrap.com/docs/4.0/examples/dashboard/#">Company name</a>-->
-    <!--<input class="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search">-->
-    <!--<ul class="navbar-nav px-3">-->
-        <!--<li class="nav-item text-nowrap">-->
-            <!--<a class="nav-link" href="http://getbootstrap.com/docs/4.0/examples/dashboard/#">Sign out</a>-->
-        <!--</li>-->
-    <!--</ul>-->
-<!--</nav>-->
 
-    <!--可以省略上面的头部栏，用公用的头部栏，引入抽取的topbar-->
-    <!--模板名：会使用thymeleaf的前后缀配置规则进行解析-->
-    <!--~{模板名：：片段名}-->
-    <div th:replace="commons/bar::topbar"></div>
-    <!--注意项！！！-->
-    <!--审查元素发现多了一个div-->
-    <!--
-    <div>
+<!--可以省略上面的头部栏，用公用的头部栏，引入抽取的topbar-->
+<!--模板名：会使用thymeleaf的前后缀配置规则进行解析-->
+<!--~{模板名：：片段名}-->
+<div th:replace="commons/bar::topbar"></div>
+<!--注意项！！！-->
+<!--审查元素发现多了一个div-->
+<!--
+<div>
 
-    <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="http://getbootstrap.com/docs/4.0/examples/dashboard/#">[[${session.loginUser}]]+LJS</a>
-    <input class="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search">
-    <ul class="navbar-nav px-3">
-        <li class="nav-item text-nowrap">
-            <a class="nav-link" href="http://getbootstrap.com/docs/4.0/examples/dashboard/#">Sign out</a>
-        </li>
-    </ul>
-    </nav>
-    </div>
-    -->
+<a class="navbar-brand col-sm-3 col-md-2 mr-0" href="http://getbootstrap.com/docs/4.0/examples/dashboard/#">[[${session.loginUser}]]+LJS</a>
+<input class="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search">
+<ul class="navbar-nav px-3">
+    <li class="nav-item text-nowrap">
+        <a class="nav-link" href="http://getbootstrap.com/docs/4.0/examples/dashboard/#">Sign out</a>
+    </li>
+</ul>
+</nav>
+</div>
+-->
 
-
-    <!--th:insert:将公共片段整个插入到声明元素中-->
-    <!--th:replace:将声明引入的元素替换为公共片段  用了之后不含之前多一个div的情况-->
-    <!--th:include:将被引入的内容包含进这个标签中-->
+<!--th:insert:将公共片段整个插入到声明元素中-->
+<!--th:replace:将声明引入的元素替换为公共片段  用了之后不含之前多一个div的情况-->
+<!--th:include:将被引入的内容包含进这个标签中-->
 
 <div class="container-fluid">
     <div class="row">
@@ -100,29 +88,46 @@
                     </thead>
 
                     <tbody>
-                        <tr th:each="emp:${emps}">
-                            <td th:text="${emp.id}"></td>
-                            <td>[[${emp.lastName}]]</td>
-                            <!--两种取法 <td th:text="${emp.lastName}"></td>-->
-                            <td th:text="${emp.email}"></td>
-                            <td th:text="${emp.gender}==0?'女':'男'"></td>
-                            <td th:text="${emp.department.departmentName}"></td>
-                            <td th:text="${#dates.format(emp.birth,'yyyy-MM-dd HH:mm')}"></td>
-                            <td>
-                                <a class="btn btn-sm btn-primary" th:href="@{/emp/}+${emp.id}">编辑</a>
-                                <!--</form>    把表单放在外边-->
-                                <button th:attr="del_uri=@{/emp/}+${emp.id}" type="submit" class="btn btn-sm btn-danger deleteBtn" name="deleteBtn">删除</button>
-                            </td>
-                        </tr>
+                    <tr th:each="emp:${emps}">
+                        <td th:text="${emp.id}"></td>
+                        <td>[[${emp.lastName}]]</td>
+                        <!--两种取法 <td th:text="${emp.lastName}"></td>-->
+                        <td th:text="${emp.email}"></td>
+                        <td th:text="${emp.gender}==0?'女':'男'"></td>
+                        <td th:text="${emp.department.departmentName}"></td>
+                        <td th:text="${#dates.format(emp.birth,'yyyy-MM-dd HH:mm')}"></td>
+                        <td>
+                            <a class="btn btn-sm btn-primary" th:href="@{/emp/}+${emp.id}">编辑</a>
+                            <!--</form>    把表单放在外边-->
+                            <button th:attr="del_uri=@{/emp/}+${emp.id}" type="submit" class="btn btn-sm btn-danger deleteBtn" name="deleteBtn">删除</button>
+                        </td>
+                    </tr>
                     </tbody>
                 </table>
             </div>
         </main>
-            <form id="deleteEmpForm"  method="post">
+        <form id="deleteEmpForm"  method="post">
             <input type="hidden" name="_method" value="delete"/>
-            </form>
-        </div>
+        </form>
+
+
+        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
+            <h2>
+                <a class="btn btn-sm btn-success" th:onclick="'javascript:getResult()'">开始</a>
+                <button class="btn btn-primary" type="button" id="buyButton" onclick="getResult()">开始</button>
+            </h2>
+            <!--发送GET请求，href默认为GET请求!!!!!!!!!!!-->
+            <div class="table-responsive">
+            </div>
+        </main>
+    </div>
 </div>
+
+
+<br>
+<!-- 为 ECharts 准备一个具备大小（宽高）的 DOM -->
+<div id="main" style="width: 1000px;height:400px;"></div>
+
 
 <!-- Bootstrap core JavaScript
 ================================================== -->
@@ -130,22 +135,92 @@
 <script type="text/javascript" src="asserts/js/jquery-3.2.1.slim.min.js"></script>
 <script type="text/javascript" src="asserts/js/popper.min.js"></script>
 <script type="text/javascript" src="asserts/js/bootstrap.min.js"></script>
-
 <!-- Icons -->
 <script type="text/javascript" src="asserts/js/feather.min.js"></script>
 <script>
     feather.replace()
+
+    // 基于准备好的dom，初始化echarts实例
+    var myChart = echarts.init(document.getElementById('main'));
+
+    // 指定图表的配置项和数据
+    var option = {
+        grid:{
+            left:'50%',
+            right:'0',
+            bottom:'1%',
+            containLabel:true
+        },
+        title: {
+            left:'30%',
+            text: 'ECharts 入门示例'
+        },
+        // grid:{
+        //     x:180,
+        //     y:380,
+        //     borderWidth:1
+        // },
+
+        tooltip: {},
+        legend: {
+            left:'50%',
+            data:['销量']
+        },
+        xAxis: {
+            data: ["衬衫","羊毛衫","雪纺衫","裤子","高跟鞋","袜子"]
+        },
+        yAxis: {},
+        series: [{
+            name: '销量',
+            type: 'bar',
+            data: [5, 20, 36, 10, 10, 20]
+        }]
+    };
+    // 使用刚指定的配置项和数据显示图表。
+    myChart.setOption(option);
+    //myChart.setOption()
+
+    // $(".deleteBtn").click(function () {
+    //     //$(this).attr("del_uri");//取得每个按钮的对应提交的按钮
+    //     $("#deleteEmpForm").attr("action",$(this).attr("del_uri")).submit();//.attr()取得某元素，给其赋值
+    //     return false;
+    // });
+
+
+    //做轮询
+    function getResult() {
+        //alert("测试！")
+
+        $.ajax({
+            url : "/getAvgResult",
+            type : "GET",
+            success : function(data) {
+                if (data.code == 0) {
+                    var result = data.data;
+                    if (result < 0) {
+                        //layer.msg("抱歉，秒杀失败!");
+                    } else if (result == 0) {
+                        //继续轮询
+                        setTimeout(function() {
+                            getResult();
+                        }, 200);//200ms之后继续轮询
+                        alert("11！");
+                        //layer.msg(data.msg);
+                    } else {
+
+                    }
+                } else {
+                    //layer.msg(data.msg);
+                }
+            },
+            error : function() {
+                //layer.msg("请求有误！");
+            }
+        });
+
+    }
 </script>
 
-<!-- Graphs -->
-<!---->
-    <script>
-        $(".deleteBtn").click(function () {
-            //$(this).attr("del_uri");//取得每个按钮的对应提交的按钮
-            $("#deleteEmpForm").attr("action",$(this).attr("del_uri")).submit();//.attr()取得某元素，给其赋值
-            return false;
-        });
-    </script>
 </body>
 
 </html>

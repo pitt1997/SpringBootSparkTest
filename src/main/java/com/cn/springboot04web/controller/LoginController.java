@@ -16,11 +16,9 @@ public class LoginController {
     @RequestMapping(value = "user/login",method = RequestMethod.POST)
     public String login(@RequestParam("username") String username, @RequestParam("password") String password
                         , Map<String,Object> map, HttpSession session){
-        System.out.println("1----------------------------------------------------------------");
         if(!StringUtils.isEmpty(username)&&"123456".equals(password)){
             session.setAttribute("loginUser",username);
             //登录成功往session里面添加用户！！！session里面如果有则代表已经登录  作为标记！！！
-            System.out.println("2----------------------------------------------------------------");
             //登录成功          防止表单重复提交可以使用重定向的主页
             return "redirect:/main.html";            //由于main.html页面添加了视图映射，直接到dashboard视图
 

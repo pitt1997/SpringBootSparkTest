@@ -5,6 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <script src="asserts/js/echarts.min.js"></script>
 </head>
 <body>
 <h1>首页！</h1>
@@ -12,17 +13,101 @@
 <hr/>
 <!-- th：each每次遍历都会生成这个标签  -->
 
-    <div th:text="${hello}"></div>
-    <div th:utext="${hello}"></div>
-    <hr/>
+<div th:text="${hello}"></div>
+<div th:utext="${hello}"></div>
+<hr/>
 
-    <h4 th:text="${user}" th:each="user:${users}">
+<h4 th:text="${user}" th:each="user:${users}">
 
-    </h4>
-    <hr/>
-    <h4>
-        <span th:each="user:${users}">[[${user}]]</span>
-    </h4>
+</h4>
+<hr/>
+<h4>
+    <span th:each="user:${users}">[[${user}]]</span>
+</h4>
 
+
+<div id="main" style="width: 1000px;height:400px;"></div>
 </body>
+
+<script>
+
+    // 基于准备好的dom，初始化echarts实例
+    var myChart = echarts.init(document.getElementById('main'));
+
+    // // 指定图表的配置项和数据
+    // var option = {
+    //     grid:{
+    //         left:'50%',
+    //         right:'0',
+    //         bottom:'1%',
+    //         containLabel:true
+    //     },
+    //     title: {
+    //         left:'50%',
+    //         text: 'ECharts 入门示例'
+    //     },
+    //     // grid:{
+    //     //     x:180,
+    //     //     y:380,
+    //     //     borderWidth:1
+    //     // },
+    //
+    //     tooltip: {},
+    //     legend: {
+    //         left:'50%',
+    //         data:['销量']
+    //     },
+    //     xAxis: {
+    //         data: ["衬衫","羊毛衫","雪纺衫","裤子","高跟鞋","袜子"]
+    //     },
+    //     yAxis: {},
+    //     series: [{
+    //         name: '销量',
+    //         type: 'bar',
+    //         data: [5, 20, 36, 10, 10, 20]
+    //     }]
+    // };
+
+
+
+    // 显示标题，图例和空的坐标轴
+    myChart.setOption({
+        title: {
+            text: '异步数据加载示例'
+        },
+        tooltip: {},
+        legend: {
+            data:['销量']
+        },
+        xAxis: {
+            data: []
+        },
+        yAxis: {},
+        series: [{
+            name: '销量',
+            type: 'bar',
+            data: []
+        }]
+    });
+
+    // 异步加载数据
+    $.get('data.json').done(function (data) {
+        // 填入数据
+        myChart.setOption({
+            xAxis: {
+                data: data.categories
+            },
+            series: [{
+                // 根据名字对应到相应的系列
+                name: '销量',
+                data: data.data
+            }]
+        });
+    });
+
+    // 使用刚指定的配置项和数据显示图表。
+    myChart.setOption(option);
+    //myChart.setOption()
+
+</script>
 </html>

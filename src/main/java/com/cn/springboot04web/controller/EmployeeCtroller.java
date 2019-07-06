@@ -8,18 +8,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.Collection;
+
 @Controller
 public class EmployeeCtroller {
-    //注入EmployeeDao
-    //注解就是spring可以自动帮你把bean里面引用的对象的setter/getter方法省略，它会自动帮你set/get
     @Autowired
     EmployeeDao employeeDao;
     @Autowired
     DepartmentDao departmentDao;
-    //查询所有员工，返回员工列表页面
-    //@RequestMapping("/emps")
-    //@ResponseBody
+
+
     @GetMapping("/emps")
     public String list(Model model){
         Collection<Employee> all = employeeDao.getAll();
@@ -50,8 +49,8 @@ public class EmployeeCtroller {
     }
 
     //来到修改页面，获取员工id，查出当前员工信息，在页面回显
-   @RequestMapping("/emp/{id}")
-   //@ResponseBody
+    @RequestMapping("/emp/{id}")
+    //@ResponseBody
     public String toEditPage(@PathVariable("id") Integer id,Model model){//
         Employee employee = employeeDao.get(id);
         model.addAttribute("emp",employee);
