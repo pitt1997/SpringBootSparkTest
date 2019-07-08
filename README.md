@@ -22,5 +22,5 @@ IntelliJ IDEA 2017.3.1 x64
 3. 到src/main/resources下的application.properties检查一些通用配置（端口、路径）
 4. 访问地址：http://localhost:8081/crud/average 访问显示平均分（sparkSQL）
 5. 访问地址：http://localhost:8081/crud/test 访问进行监听页面（sparkStreaming）
-6. 上传文件，开启监听处理，并获取数据进行显示（打分文件在files文件夹里面，里面是按照
-多个空格分隔，第一列是userId，第二列是movieId，第三列即分数，第四列为时间戳）
+6. 上传文件，开启监听处理，并获取数据进行显示（打分文件在files文件夹里面的ratings.txt文件，里面
+是按照多个空格分隔，第一列是userId，第二列是movieId，第三列即分数，第四列为时间戳）
