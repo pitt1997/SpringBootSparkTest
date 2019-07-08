@@ -91,6 +91,8 @@ class AVGRatingOnGenreWithGender {
       writer.println(line.toString())
     }
     writer.close()
+    spark.stop()
+    sc.stop()
     //result
   }
 }

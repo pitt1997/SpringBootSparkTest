@@ -43,15 +43,25 @@ public class SparkStreamingCtroller {
 
     @RequestMapping(value = "/getList", method = RequestMethod.GET)
     @ResponseBody
-    public Result<ArrayList<Float>> getList(Model model) {
+    public Result<ResultLists> getList(Model model) {
         //返回一个数组
-        System.out.println("到达getListMovieRating.scoreList--"+MovieRating.scoreList.size());
-
-        for(Float f:MovieRating.scoreList){
-            System.out.println("------------------f------------------------"+f);
-        }
-
-        return Result.success(MovieRating.scoreList);
+        System.out.println("---------------------------------到达getListMovieRating.scoreList--"+MovieRating.scoreList.size());
+        System.out.println("---------------------------------到达getListMovieRating.movieIdList--"+MovieRating.movieIdList.size());
+        ResultLists resultLists=new ResultLists();
+        ArrayList <Integer>mlist=new ArrayList();
+        ArrayList <Float>slist=new ArrayList();
+        mlist.addAll(MovieRating.movieIdList);
+        slist.addAll(MovieRating.scoreList);
+        resultLists.movieIdList=mlist;
+        resultLists.scoreList=slist;
+        //清空list
+        MovieRating.movieIdList.clear();
+        MovieRating.scoreList.clear();
+        System.out.println("---------------------------------操作.scoreList--"+MovieRating.scoreList.size());
+        System.out.println("---------------------------------操作.movieIdList--"+MovieRating.movieIdList.size());
+        System.out.println("---------------------------------操作.mlist--"+mlist.size());
+        System.out.println("---------------------------------操作.slist--"+slist.size());
+        return Result.success(resultLists);
     }
 
     @RequestMapping(value = "/getAvgResult", method = RequestMethod.GET)
@@ -67,7 +77,6 @@ public class SparkStreamingCtroller {
         Float []avgY=new Float[18];
         int key=1;
         for(int i=0;i<18;i++){
-
             avgY[i]=MovieRating.tmpMap.get(key+"");
             System.out.println("tmpMap[i]:"+avgY[i]);
             System.out.println("map[i]:"+MovieRating.map.get(key+""));
@@ -104,8 +113,6 @@ public class SparkStreamingCtroller {
 
 
 
-
-
     @RequestMapping(value = "/getAvgResult03", method = RequestMethod.POST)
     @ResponseBody
     public Echarts getAvgResult03(HttpServletResponse response){
@@ -128,38 +135,5 @@ public class SparkStreamingCtroller {
         return echarts;
     }
 
-
-
-
-
-
-
-
-
-
-
-    //暂时不用了
-    @RequestMapping(value = "/getAvgResult02", method = RequestMethod.POST)
-    @ResponseBody
-    public Echarts getAvgResult02(HttpServletResponse response, String time){
-        DateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
-        //EcOrderCount ecOrderCounts=ecOrderStatisticsService.getCountsByTime(format1.parse(time));
-        System.out.println("time------------------------------------------:"+time);
-        //图例
-        List<String> legend = new ArrayList<String>(Arrays.asList(new String[] { "全部订单","支付订单"}));
-        //横坐标的值
-        List<String> axis = new ArrayList<String>(
-                Arrays.asList(new String[] {"1:00","2:00","3:00","4:00","5:00","6:00","7:00","8:00","9:00","10:00","11:00","12:00","13:00","14:00","15:00","16:00","17:00","18:00","19:00","20:00","21:00","22:00","23:00","24:00"}));
-        Integer []l1={100,200,200,300,500,600,800,200,100,200,200,300,100,200,200,300,500,600,800,400,700,200,200,300};
-        Integer []l2={100,500,200,800,500,600,800,900,100,700,200,300,100,200,200,300,500,500,800,200,100,200,900,300};
-        //Action
-        //{Action,Adventure,Animation,Children's,Comedy,Documentary,Drama,Fantasy,Film-Noir,Horror,Musical,Mystery,Romance,Sci-Fi,Thriller,War,Western,no genres listed}
-        //纵坐标的值（每个时间段对应的量）
-        List<Series> series = new ArrayList<Series>();
-        series.add(new Series("全部订单","line",new ArrayList<Integer>(Arrays.asList(l1))));
-        series.add(new Series("支付订单","line",new ArrayList<Integer>(Arrays.asList(l2))));
-        Echarts echarts = new Echarts(legend, axis, series);
-        return echarts;
-    }
 
 }

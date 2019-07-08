@@ -15,18 +15,17 @@ class  KeepFileDirectory {
     //ssc.sparkContext.setLogLevel("ERROR")
     //指定输入流文件夹
     val lines = ssc.textFileStream("E:\\Beta\\Spark\\data\\final")
-    //println("lines.toString:"+lines.toString)
-    //println("words:"+words)
 
-    //list
     val result = lines.filter(line=>(line.trim().length>0)&&line.split("\\s+").length==4)
-      .map(_.split("\\s+")(2))
-      .foreachRDD(rdd =>
-        rdd.foreach {x=>
-          println("到达result:"+x.toFloat)
-          MovieRating.scoreList.add(x.toFloat)
-        }
-      )
+      .map(row=>(row.split("\\s+")(1).toInt,row.split("\\s+")(2).trim().toFloat))
+      .foreachRDD(rdd=>
+      rdd.foreach {x=>
+        println("到达result:"+x._1)
+        MovieRating.movieIdList.add(x._1)
+        MovieRating.scoreList.add(x._2)
+        //MovieRating.movieIdList.add()
+      }
+    )
 
     val res = lines.filter(_.trim().length>0).map(line=>(line.split("\\s+")(1).trim().toInt,
       line.split("\\s+")(2).trim().toFloat)).groupByKey()
@@ -120,6 +119,8 @@ class  KeepFileDirectory {
 }
 
 object KeepFileDirectory {
+  //val conf = new SparkConf().setMaster("local").setAppName("NetWorkWordCount")
+
   def main(args: Array[String]) {
     StreamingExample.setStreamingLogLevels()
                                       //local[2]

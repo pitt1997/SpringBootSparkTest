@@ -1,5 +1,4 @@
 package com.cn.springboot04web.entities;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -17,27 +16,29 @@ public class MovieRating {
     public static HashSet<String> movieSet=new HashSet<>();
     //所有分数
     public static ArrayList<Float> scoreList=new ArrayList<>();
+    //电影Id
+    public static ArrayList<Integer> movieIdList=new ArrayList<>();
 
     //初始化map值
     static {
-        tmpMap.put("1",1.00f);
-        tmpMap.put("2",2.01f);
-        tmpMap.put("3",3.02f);
-        tmpMap.put("4",4.02f);
-        tmpMap.put("5",4.03f);
-        tmpMap.put("6",4.04f);
-        tmpMap.put("7",4.03f);
-        tmpMap.put("8",4.03f);
-        tmpMap.put("9",4.03f);
-        tmpMap.put("10",3.03f);
-        tmpMap.put("11",3.03f);
-        tmpMap.put("12",4.04f);
-        tmpMap.put("13",3.04f);
-        tmpMap.put("14",4.03f);
-        tmpMap.put("15",3.01f);
-        tmpMap.put("16",4.02f);
-        tmpMap.put("17",4.01f);
-        tmpMap.put("18",3.02f);
+        tmpMap.put("1",0.00f);
+        tmpMap.put("2",0.00f);
+        tmpMap.put("3",0.00f);
+        tmpMap.put("4",0.00f);
+        tmpMap.put("5",0.00f);
+        tmpMap.put("6",0.00f);
+        tmpMap.put("7",0.00f);
+        tmpMap.put("8",0.00f);
+        tmpMap.put("9",0.00f);
+        tmpMap.put("10",0.00f);
+        tmpMap.put("11",0.00f);
+        tmpMap.put("12",0.00f);
+        tmpMap.put("13",0.00f);
+        tmpMap.put("14",0.00f);
+        tmpMap.put("15",0.00f);
+        tmpMap.put("16",0.00f);
+        tmpMap.put("17",0.00f);
+        tmpMap.put("18",0.00f);
     }
 
     //初始化map值

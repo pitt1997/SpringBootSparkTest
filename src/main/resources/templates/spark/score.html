@@ -92,6 +92,7 @@
 <script>
     var monitorFlag=false;
     var scoreList=[];
+    var movieIdList=[];
     var listLength=0;
     //('main'),'shine')：使用皮肤
     var myChart = echarts.init(document.getElementById('main'));
@@ -213,24 +214,11 @@
             }
         });
         //上传文件之后，就进行实时打印
-        monitorFlag=true;
+        //monitorFlag=false;
         setTimeout( function(){
-            //add your code
             startMonitor();
         }, 5 * 1000 );//延迟5000毫米
-
-        listLength=scoreList.size;
-        alert("len--"+listLength);
     }
-    var count=5;
-    // wait5ms(function(){
-    //     if(count==0){
-    //
-    //     }else{
-    //
-    //     }
-    // }, 1000);
-
 
 </script>
 <script>
@@ -238,7 +226,8 @@
     var date = [];
     var randomData = [];
     for(var i = 0; i<30; i++){
-        date.push(i+1);
+        date.push(0);
+        //date.push(i+1);
         randomData.push(0);
     }
     // 指定图表的配置项和数据
@@ -269,7 +258,6 @@
     myChart2.setOption(option2);
     var len = date.length;
 
-
     setInterval(function(){
         //做一个判断，如为false，那么就是 0
         if(!monitorFlag){
@@ -277,7 +265,8 @@
             //alert("len:"+randomData.length);
             //alert("index:"+randomData[0]);
             randomData.shift();
-            date.push(len++);
+            // date.push(len++);
+            date.push(0);
             date.shift();
             myChart2.setOption({
                 xAxis: {
@@ -289,14 +278,18 @@
             });
         }else{
             randomData.push(scoreList.shift());
-            listLength--;
             randomData.shift();
+            // date.push(len++);
+            // date.shift();
+            date.push(movieIdList.shift());
+            date.shift();
+            //movieIdList.shift();
+            listLength--;
             //如果list里面的数据取完了，那么下次跳出分支
-            if(listLength==0){
+            if(listLength<=0){
+                //alert("listLength:"+listLength);
                 monitorFlag=false;
             }
-            date.push(len++);
-            date.shift();
             myChart2.setOption({
                 xAxis: {
                     data: date
@@ -315,12 +308,12 @@
             success : function(data) {
                 if (data.code == 0) {
                     var result = data.data;
-                    alert("--"+result);
-                    alert("--"+result[0]);
-                    //调
-                    scoreList=result;
-                    alert("--"+result);
-                    alert("--"+result[0]);
+                    scoreList=result.scoreList;
+                    movieIdList=result.movieIdList;
+                    //alert("scoreList:"+scoreList.length);
+                    alert("movieIdList:"+movieIdList.length);
+                    listLength=scoreList.length;
+                    monitorFlag=true;
                 } else {
                     //layer.msg(data.msg);
                 }
@@ -330,76 +323,6 @@
             }
         });
     }
-
 </script>
 
-
-
-
-
-<script>
-    //第三张图表
-
-    // var myChart3 = echarts.init(document.getElementById('main3'));
-    // var option3 = {
-    //     grid:{
-    //         left:'20%',
-    //         right:'0',
-    //         bottom:'1%',
-    //         containLabel:true
-    //     },
-    //     title: {
-    //         left:'20%',
-    //         text: '当前电影评分情况'
-    //     },
-    //     tooltip: {
-    //         trigger: 'axis'
-    //     },
-    //     legend: {
-    //         data:[]
-    //     },
-    //     toolbox: {
-    //         feature: {
-    //             saveAsImage: {
-    //                 name:'奖池监控',
-    //                 pixelRatio:2
-    //             }
-    //         }
-    //     },
-    //     xAxis : [ {
-    //         type : 'category',
-    //         boundaryGap: false,
-    //         data : []
-    //     } ],
-    //     yAxis : [ {
-    //         type : 'value'
-    //     } ],
-    //     series : []
-    // };
-
-    // $.ajax({
-    //     type: "POST",
-    //     url: '/crud/getAvgResult03',
-    //     dataType: "json",
-    //     success: function (result) {
-    //         //将从后台接收的json字符串转换成json对象
-    //         var jsonobj = eval(result);
-    //         //给图标标题赋值
-    //         option3.legend.data = jsonobj.legend;
-    //         //读取横坐标值
-    //         option3.xAxis[0].data = jsonobj.axis;
-    //         var series_arr = jsonobj.series;
-    //         //驱动图表生成的数据内容，数组中每一项代表一个系列的特殊选项及数据
-    //         for (var i = 0; i < series_arr.length; i++) {
-    //             option3.series[i] = result.series[i];
-    //         }
-    //         //过渡控制，隐藏loading（读取中）
-    //         myChart3.hideLoading();
-    //         // 为echarts对象加载数据
-    //         myChart3.setOption(option3);
-    //     }
-    // });
-    // myChart3.setOption(option3);
-
-</script>
 </html>
