@@ -1,7 +1,12 @@
 ## spark+scala+springboot+echarts整合
-## 开发工具 
+## 工具 
 IntelliJ IDEA 2017.3.1 x64
-## 开发环境				
+
+## 版本
+# scala 2.11.12
+# spark 2.3.0
+
+## 环境			
 
 | JDK |Maven | Mysql |SpringBoot | scala |spark|
 |--|--|--|--|--|--|
